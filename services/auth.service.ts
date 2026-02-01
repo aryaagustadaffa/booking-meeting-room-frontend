@@ -19,18 +19,20 @@ export const authService = {
   },
 
   saveAuth(auth: AuthResponse) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('token', auth.token)
-      localStorage.setItem('user', JSON.stringify(auth.user))
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('token', auth.token)
+      window.localStorage.setItem('user', JSON.stringify(auth.user))
       // Also save token to a cookie for server-side access
-      document.cookie = `token=${auth.token}; path=/; max-age=86400; SameSite=Lax`
+      if (window.document) {
+        window.document.cookie = `token=${auth.token}; path=/; max-age=86400; SameSite=Lax`
+      }
     }
   },
 
   getAuth(): AuthResponse | null {
-    if (typeof window === 'undefined') return null
-    const token = localStorage.getItem('token')
-    const userStr = localStorage.getItem('user')
+    if (typeof window === 'undefined' || !window.localStorage) return null
+    const token = window.localStorage.getItem('token')
+    const userStr = window.localStorage.getItem('user')
     if (!token || !userStr) return null
     return {
       token,
@@ -39,16 +41,18 @@ export const authService = {
   },
 
   clearAuth() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('user')
       // Also remove the cookie
-      document.cookie = 'token=; path=/; max-age=0; SameSite=Lax'
+      if (window.document) {
+        window.document.cookie = 'token=; path=/; max-age=0; SameSite=Lax'
+      }
     }
   },
 
   isAuthenticated(): boolean {
-    if (typeof window === 'undefined') return false
-    return !!localStorage.getItem('token')
+    if (typeof window === 'undefined' || !window.localStorage) return false
+    return !!window.localStorage.getItem('token')
   },
 }

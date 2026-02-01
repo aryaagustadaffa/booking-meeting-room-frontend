@@ -24,7 +24,7 @@ export default function LandingPage() {
               Book and manage meeting rooms efficiently. Streamline your team&apos;s meeting room reservations with our easy-to-use platform.
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
-              <Link href="/auth/auth/login">
+              <Link href="/auth/login">
                 <Button size="lg">
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4" />

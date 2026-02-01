@@ -17,8 +17,8 @@ class ApiClient {
     // Request interceptor to add auth token
     this.client.interceptors.request.use(
       (config) => {
-        if (typeof window !== 'undefined') {
-          const token = localStorage.getItem('token')
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const token = window.localStorage.getItem('token')
           if (token) {
             config.headers.Authorization = `Bearer ${token}`
           }
@@ -36,13 +36,15 @@ class ApiClient {
       (error: AxiosError<ApiResponse<unknown>>) => {
         if (error.response?.status === 401) {
           // Token expired or invalid
-          if (typeof window !== 'undefined') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.removeItem('token')
+            window.localStorage.removeItem('user')
             // Also remove the cookie
-            document.cookie = 'token=; path=/; max-age=0; SameSite=Lax'
+            if (window.document) {
+              window.document.cookie = 'token=; path=/; max-age=0; SameSite=Lax'
+            }
             // Only redirect if not already on the login page to prevent refresh on failed login
-            if (!window.location.pathname.includes('/auth/login')) {
+            if (window.location && !window.location.pathname.includes('/auth/login')) {
               window.location.href = '/auth/login'
             }
           }

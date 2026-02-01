@@ -15,6 +15,10 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
 
+// Disable prerendering for this page to avoid build-time errors
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 function RegisterForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)

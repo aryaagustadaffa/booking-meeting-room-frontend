@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -13,6 +13,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
+
+// Disable prerendering for this page to avoid build-time errors
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 function LoginForm() {
   const router = useRouter()
@@ -33,24 +37,24 @@ function LoginForm() {
     try {
       await login(data.email, data.password)
       toast.success('Login successful!')
-      
+
       // Get the redirect parameter from URL or determine based on user role
       const redirectParam = searchParams.get('redirect')
       console.log('Redirect param:', redirectParam)
-      
+
       // Get user info from localStorage
       const auth = (await import('@/services/auth.service')).authService.getAuth()
       const userRole = auth?.user?.role
       console.log('User role:', userRole)
       console.log('User data:', auth?.user)
-      
+
       let redirectPath = '/dashboard'
       if (redirectParam) {
         redirectPath = redirectParam
       } else if (userRole === 'ADMIN') {
         redirectPath = '/admin'
       }
-      
+
       console.log('Redirecting to:', redirectPath)
       router.push(redirectPath)
       router.refresh()
@@ -122,10 +126,18 @@ function LoginForm() {
   )
 }
 
+function LoginFormWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+  )
+}
+
 export default function LoginPage() {
   return (
     <AuthProvider>
-      <LoginForm />
+      <LoginFormWrapper />
     </AuthProvider>
   )
 }
