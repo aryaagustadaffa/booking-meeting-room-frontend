@@ -1,10 +1,75 @@
 @import "tailwindcss";
 
 /* ========================================
-   MATERIAL DESIGN 3 (MATERIAL YOU) TOKENS
+   DESKTOP-FIRST DESIGN TOKENS
+   Thin Border Modern SaaS UI Style
    ======================================== */
 
 :root {
+  /* ========================================
+     THIN BORDER SYSTEM
+     ======================================== */
+  --border-thin: 0.5px;
+  --border-hairline: 0.5px;
+  --border-light: 1px;
+  
+  /* Light Mode Border Colors */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  
+  /* ========================================
+     SHADOW ELEVATION SYSTEM
+     ======================================== */
+  --shadow-thin: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-thin-lg: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-thin-xl: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
+  
+  --shadow-card-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-card-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-card-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  
+  --shadow-sidebar: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  --shadow-sidebar-hover: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 8px 20px 0 rgba(0, 0, 0, 0.12);
+  
+  --shadow-panel: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+  --shadow-panel-hover: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 12px 24px 0 rgba(0, 0, 0, 0.12);
+  
+  --shadow-header: 0 1px 0 0 rgba(0, 0, 0, 0.05);
+  --shadow-header-sticky: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+  
+  --shadow-row-hover: 0 0 0 1px rgba(0, 0, 0, 0.04);
+  
+  /* ========================================
+     DESKTOP CONTAINER WIDTHS
+     ======================================== */
+  --container-content: 1440px;
+  --container-content-xl: 1600px;
+  --container-content-2xl: 1920px;
+  
+  /* ========================================
+     DESKTOP SPACING
+     ======================================== */
+  --spacing-card-padding-desktop: 1.5rem; /* 24px */
+  --spacing-card-padding-compact: 1.25rem; /* 20px */
+  
+  /* ========================================
+     FOCUS RING
+     ======================================== */
+  --focus-ring: 0 0 0 1px rgba(var(--primary-rgb), 0.3);
+  --focus-ring-hover: 0 0 0 1px rgba(var(--primary-rgb), 0.4);
+  
+  /* ========================================
+     TRANSITION TIMING
+     ======================================== */
+  --transition-saas: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-saas-in: cubic-bezier(0.4, 0, 1, 1);
+  
+  /* ========================================
+     MATERIAL DESIGN 3 (MATERIAL YOU) TOKENS
+     ======================================== */
   /* Primary Colors - Material Design 3 */
   --md-sys-color-primary: 103 80% 50%;
   --md-sys-color-on-primary: 0 0% 100%;
@@ -114,6 +179,21 @@
 }
 
 .dark {
+  /* ========================================
+     DARK MODE BORDER HANDLING
+     ======================================== */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  
+  /* Dark Mode Shadow Elevation */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-card-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-panel: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 16px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sidebar: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 4px 12px 0 rgba(0, 0, 0, 0.3);
+  --shadow-row-hover: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  
   /* Primary Colors - Dark Mode */
   --md-sys-color-primary: 140 100% 65%;
   --md-sys-color-on-primary: 35 100% 15%;
@@ -356,6 +436,189 @@ a {
 /* ========================================
    UTILITY CLASSES
    ======================================== */
+
+/* ========================================
+   THIN BORDER UTILITIES
+   ======================================== */
+
+.border-thin {
+  border-width: var(--border-thin);
+}
+
+.border-hairline {
+  border-width: var(--border-hairline);
+}
+
+.border-subtle {
+  border-color: var(--border-subtle);
+}
+
+.border-soft {
+  border-color: var(--border-soft);
+}
+
+.border-medium {
+  border-color: var(--border-medium);
+}
+
+.border-strong {
+  border-color: var(--border-strong);
+}
+
+/* Thin border combinations */
+.border-subtle-thin {
+  border: var(--border-thin) solid var(--border-subtle);
+}
+
+.border-soft-thin {
+  border: var(--border-thin) solid var(--border-soft);
+}
+
+/* ========================================
+   SHADOW ELEVATION UTILITIES
+   ======================================== */
+
+.shadow-thin {
+  box-shadow: var(--shadow-thin);
+}
+
+.shadow-thin-lg {
+  box-shadow: var(--shadow-thin-lg);
+}
+
+.shadow-thin-xl {
+  box-shadow: var(--shadow-thin-xl);
+}
+
+.shadow-card-sm {
+  box-shadow: var(--shadow-card-sm);
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+.shadow-card-md {
+  box-shadow: var(--shadow-card-md);
+}
+
+.shadow-card-lg {
+  box-shadow: var(--shadow-card-lg);
+}
+
+.shadow-sidebar {
+  box-shadow: var(--shadow-sidebar);
+}
+
+.shadow-sidebar-hover {
+  box-shadow: var(--shadow-sidebar-hover);
+}
+
+.shadow-panel {
+  box-shadow: var(--shadow-panel);
+}
+
+.shadow-panel-hover {
+  box-shadow: var(--shadow-panel-hover);
+}
+
+.shadow-header {
+  box-shadow: var(--shadow-header);
+}
+
+.shadow-header-sticky {
+  box-shadow: var(--shadow-header-sticky);
+}
+
+.shadow-row-hover {
+  box-shadow: var(--shadow-row-hover);
+}
+
+/* ========================================
+   DESKTOP-FIRST LAYOUT UTILITIES
+   ======================================== */
+
+/* 12-Column Grid System */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* Desktop Container */
+.container-desktop {
+  max-width: var(--container-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.container-desktop-xl {
+  max-width: var(--container-content-xl);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Desktop Card Padding */
+.card-padding-desktop {
+  padding: var(--spacing-card-padding-desktop);
+}
+
+.card-padding-compact {
+  padding: var(--spacing-card-padding-compact);
+}
+
+/* ========================================
+   FOCUS RING UTILITIES
+   ======================================== */
+
+.focus-ring-primary {
+  outline: none;
+}
+
+.focus-ring-primary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.focus-ring-primary:hover {
+  box-shadow: var(--focus-ring-hover);
+}
+
+/* ========================================
+   TRANSITION UTILITIES
+   ======================================== */
+
+.transition-saas {
+  transition-timing-function: var(--transition-saas);
+}
+
+.transition-saas-in {
+  transition-timing-function: var(--transition-saas-in);
+}
+
+/* ========================================
+   HOVER FEEDBACK UTILITIES
+   ======================================== */
+
+.hover-lift {
+  transition: transform 0.2s var(--transition-saas), box-shadow 0.2s var(--transition-saas);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-lift-lg {
+  transition: transform 0.2s var(--transition-saas), box-shadow 0.2s var(--transition-saas);
+}
+
+.hover-lift-lg:hover {
+  transform: translateY(-4px);
+}
 
 /* Glassmorphism */
 .glass {

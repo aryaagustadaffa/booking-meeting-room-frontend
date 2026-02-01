@@ -6,32 +6,36 @@ import { motion, HTMLMotionProps } from 'framer-motion'
 
 export interface MCardProps extends Omit<HTMLMotionProps<'div'>, 'variant'> {
   variant?: 'elevated' | 'filled' | 'outlined'
-  elevation?: 1 | 2 | 3 | 4 | 5
+  elevation?: 'sm' | 'md' | 'lg'
   hover?: boolean
+  hoverLift?: 'none' | 'sm' | 'md' | 'lg'
   children?: React.ReactNode
 }
 
 const MCard = React.forwardRef<HTMLDivElement, MCardProps>(
-  ({ className, variant = 'elevated', elevation = 1, hover = false, children, ...props }, ref) => {
-    const baseStyles = 'rounded-xl overflow-hidden transition-all duration-200'
+  ({ className, variant = 'elevated', elevation = 'md', hover = false, hoverLift = 'none', children, ...props }, ref) => {
+    const baseStyles = 'rounded-2xl overflow-hidden transition-all duration-200'
     
     const variantStyles = {
-      elevated: 'bg-card',
-      filled: 'bg-surface-container',
-      outlined: 'bg-card border border-outline',
+      elevated: 'bg-surface shadow-card',
+      filled: 'bg-surface-container-low',
+      outlined: 'bg-surface border border-subtle',
     }
     
     const elevationStyles = {
-      1: 'elevation-1',
-      2: 'elevation-2',
-      3: 'elevation-3',
-      4: 'elevation-4',
-      5: 'elevation-5',
+      sm: 'shadow-card-sm',
+      md: 'shadow-card',
+      lg: 'shadow-card-md',
     }
     
-    const hoverStyles = hover
-      ? 'hover:scale-[1.02] hover:shadow-lg cursor-pointer'
-      : ''
+    const hoverStyles = {
+      none: '',
+      sm: 'hover:shadow-card-md',
+      md: 'hover:shadow-card-lg',
+      lg: 'hover:shadow-card-lg hover:-translate-y-0.5',
+    }
+    
+    const cursorStyles = hover || hoverLift !== 'none' ? 'cursor-pointer' : ''
     
     return (
       <motion.div
@@ -39,12 +43,13 @@ const MCard = React.forwardRef<HTMLDivElement, MCardProps>(
         className={cn(
           baseStyles,
           variantStyles[variant],
-          variant !== 'outlined' && elevationStyles[elevation],
-          hoverStyles,
+          variant === 'elevated' && elevationStyles[elevation],
+          hoverStyles[hoverLift],
+          cursorStyles,
           className
         )}
-        whileHover={hover ? { scale: 1.02 } : undefined}
-        transition={{ duration: 0.2 }}
+        whileHover={hover || hoverLift !== 'none' ? { scale: 1.01 } : undefined}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
         {...props}
       >
         {children}
@@ -79,7 +84,7 @@ const MCardTitle = React.forwardRef<HTMLHeadingElement, MCardTitleProps>(
   ({ className, children, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-title-large font-semibold leading-none tracking-tight', className)}
+      className={cn('text-heading-lg font-semibold leading-none tracking-tight', className)}
       {...props}
     >
       {children}
@@ -96,7 +101,7 @@ const MCardDescription = React.forwardRef<HTMLParagraphElement, MCardDescription
   ({ className, children, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-body-medium text-muted-foreground', className)}
+      className={cn('text-body-sm text-muted-foreground', className)}
       {...props}
     >
       {children}

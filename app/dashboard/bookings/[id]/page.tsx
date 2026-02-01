@@ -3,16 +3,11 @@
 import { EmptyState } from "@/components/shared/empty-state";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Timeline, type TimelineItem } from "@/components/shared/timeline";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { WideCard, WideCardHeader, WideCardTitle, WideCardContent, WideCardFooter } from "@/components/desktop";
+import { SidePanel, SidePanelSection, SidePanelItem } from "@/components/desktop";
+import { MButton } from "@/components/material/m-button";
+import { MBadge } from "@/components/material/m-badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate, formatDateTime, formatTime } from "@/lib/utils";
 import { bookingService } from "@/services/booking.service";
@@ -52,30 +47,34 @@ export default function BookingDetailPage({
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Button variant="ghost" onClick={() => router.back()}>
+        <MButton variant="text" onClick={() => router.back()}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
-        </Button>
-        <div className="grid gap-6 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-48" />
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-48" />
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-            </CardContent>
-          </Card>
+        </MButton>
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 lg:col-span-8">
+            <WideCard padding="md">
+              <WideCardContent>
+                <Skeleton className="h-6 w-48" />
+                <div className="mt-4 space-y-4">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              </WideCardContent>
+            </WideCard>
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <WideCard padding="md">
+              <WideCardContent>
+                <Skeleton className="h-6 w-48" />
+                <div className="mt-4 space-y-4">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              </WideCardContent>
+            </WideCard>
+          </div>
         </div>
       </div>
     );
@@ -161,218 +160,202 @@ export default function BookingDetailPage({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <Button variant="ghost" onClick={() => router.back()}>
+        <MButton variant="text" onClick={() => router.back()}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
-        </Button>
+        </MButton>
         {(booking.data.status === "pending" ||
           booking.data.status === "approved") && (
           <Link href={`/dashboard/bookings/edit/${booking.data.id}`}>
-            <Button className="w-full sm:w-auto">
+            <MButton variant="filled" className="w-full sm:w-auto">
               <Edit className="mr-2 h-4 w-4" />
               Edit Booking
-            </Button>
+            </MButton>
           </Link>
         )}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Booking Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Booking Information</CardTitle>
-            <CardDescription>
-              Details about your booking request
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Status */}
-            <div className="flex items-center justify-between rounded-lg border p-4">
-              <span className="text-sm font-medium">Status</span>
-              <StatusBadge status={booking.data.status} />
-            </div>
+      {/* Split View Layout - 12-Column Grid */}
+      <div className="grid grid-cols-12 gap-6">
+        {/* Left Column - Booking Information (8 columns) */}
+        <div className="col-span-12 lg:col-span-8">
+          <WideCard variant="elevated" padding="md">
+            <WideCardHeader title="Booking Information" />
+            <WideCardContent className="space-y-6">
+              {/* Status */}
+              <div className="flex items-center justify-between rounded-xl border border-subtle bg-surface-container-low p-4">
+                <span className="text-body-sm font-medium">Status</span>
+                <StatusBadge status={booking.data.status} />
+              </div>
 
-            {/* Date & Time */}
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <Calendar className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium">Date</p>
-                  <p className="text-sm text-muted-foreground">
-                    {formatDate(booking.data.date)}
-                  </p>
+              {/* Date & Time */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-start gap-3">
+                  <Calendar className="mt-0.5 h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-label-md font-medium">Date</p>
+                    <p className="text-body-sm text-muted-foreground">
+                      {formatDate(booking.data.date)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Clock className="mt-0.5 h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-label-md font-medium">Time</p>
+                    <p className="text-body-sm text-muted-foreground">
+                      {formatTime(booking.data.startTime)} -{" "}
+                      {formatTime(booking.data.endTime)}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Clock className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium">Time</p>
-                  <p className="text-sm text-muted-foreground">
-                    {formatTime(booking.data.startTime)} -{" "}
-                    {formatTime(booking.data.endTime)}
-                  </p>
-                </div>
+
+              {/* Description */}
+              <div className="space-y-2">
+                <p className="text-label-md font-medium">Description</p>
+                <p className="text-body-sm text-muted-foreground">
+                  {booking.data.description}
+                </p>
               </div>
-            </div>
 
-            {/* Description */}
-            <div className="space-y-2">
-              <p className="text-sm font-medium">Description</p>
-              <p className="text-sm text-muted-foreground">
-                {booking.data.description}
-              </p>
-            </div>
+              {/* Rejection Reason */}
+              {booking.data.status === "rejected" &&
+                booking.data.rejectionReason && (
+                  <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-4">
+                    <p className="text-label-md font-medium text-destructive">
+                      Rejection Reason
+                    </p>
+                    <p className="mt-1 text-body-sm text-destructive/90">
+                      {booking.data.rejectionReason}
+                    </p>
+                  </div>
+                )}
 
-            {/* Rejection Reason */}
-            {booking.data.status === "rejected" &&
-              booking.data.rejectionReason && (
-                <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4">
-                  <p className="text-sm font-medium text-destructive">
-                    Rejection Reason
-                  </p>
-                  <p className="mt-1 text-sm text-destructive/90">
-                    {booking.data.rejectionReason}
-                  </p>
-                </div>
-              )}
+              {/* Timeline */}
+              <div>
+                <p className="mb-4 text-label-md font-medium">Booking Timeline</p>
+                <Timeline items={getTimelineItems()} />
+              </div>
+            </WideCardContent>
+          </WideCard>
+        </div>
 
-            {/* Timeline */}
-            <div>
-              <p className="mb-4 text-sm font-medium">Booking Timeline</p>
-              <Timeline items={getTimelineItems()} />
-            </div>
-          </CardContent>
-        </Card>
+        {/* Right Column - Room Information (4 columns) */}
+        <div className="col-span-12 lg:col-span-4">
+          <WideCard variant="elevated" padding="md" className="sticky top-24">
+            <WideCardHeader title="Room Information" />
+            <WideCardContent className="space-y-6">
+              {booking.data.room && (
+                <>
+                  {/* Cover Photo */}
+                  {booking.data.room.coverPhoto && (
+                    <div
+                      className="group relative aspect-video cursor-pointer overflow-hidden rounded-xl border border-subtle"
+                      onClick={() => openGallery(0)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          openGallery(0);
+                        }
+                      }}
+                    >
+                      <Image
+                        src={booking.data.room.coverPhoto}
+                        alt={booking.data.room.name}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/20">
+                        <ImageIcon className="h-8 w-8 text-white opacity-0 transition-opacity group-hover:opacity-100" />
+                      </div>
+                    </div>
+                  )}
 
-        {/* Room Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Room Information</CardTitle>
-            <CardDescription>Details about the booked room</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {booking.data.room && (
-              <>
-                {/* Cover Photo */}
-                {booking.data.room.coverPhoto && (
-                  <div
-                    className="group relative aspect-video cursor-pointer overflow-hidden rounded-lg border"
-                    onClick={() => openGallery(0)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        openGallery(0);
-                      }
-                    }}
-                  >
-                    <Image
-                      src={booking.data.room.coverPhoto}
-                      alt={booking.data.room.name}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  {/* Room Details */}
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-label-md font-medium">Room Name</p>
+                      <p className="text-heading-lg font-semibold">
+                        {booking.data.room.name}
+                      </p>
+                    </div>
+
+                    <SidePanelItem
+                      label="Location"
+                      value={booking.data.room.location}
+                      icon={<MapPin className="h-4 w-4" />}
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/20">
-                      <ImageIcon className="h-8 w-8 text-white opacity-0 transition-opacity group-hover:opacity-100" />
+
+                    <SidePanelItem
+                      label="Capacity"
+                      value={`${booking.data.room.capacity} people`}
+                      icon={<Users className="h-4 w-4" />}
+                    />
+
+                    <div className="border-t border-subtle pt-4">
+                      <p className="mb-3 text-label-md font-medium">Facilities</p>
+                      <div className="flex flex-wrap gap-2">
+                        {booking.data.room.facilities.map((facility, index) => (
+                          <MBadge key={index} variant="surface" size="sm">
+                            {facility}
+                          </MBadge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
 
-                {/* Room Details */}
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-medium">Room Name</p>
-                    <p className="text-lg font-semibold">
-                      {booking.data.room.name}
-                    </p>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <MapPin className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Location</p>
-                      <p className="text-sm text-muted-foreground">
-                        {booking.data.room.location}
+                    <div className="space-y-2">
+                      <p className="text-label-md font-medium">Description</p>
+                      <p className="text-body-sm text-muted-foreground">
+                        {booking.data.room.description}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3">
-                    <Users className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Capacity</p>
-                      <p className="text-sm text-muted-foreground">
-                        {booking.data.room.capacity} people
-                      </p>
+                  {/* Gallery */}
+                  {allPhotos.length > 1 && (
+                    <div className="border-t border-subtle pt-4">
+                      <p className="mb-3 text-label-md font-medium">Gallery</p>
+                      <div className="grid grid-cols-4 gap-2">
+                        {allPhotos.slice(0, 4).map((photo, index) => (
+                          <div
+                            key={index}
+                            className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg border border-subtle"
+                            onClick={() => openGallery(index)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                openGallery(index);
+                              }
+                            }}
+                          >
+                            <Image
+                              src={photo}
+                              alt={`Gallery photo ${index + 1}`}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            {index === 3 && allPhotos.length > 4 && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                                <span className="text-heading-lg font-semibold text-white">
+                                  +{allPhotos.length - 4}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <p className="text-sm font-medium">Facilities</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {booking.data.room.facilities.map((facility, index) => (
-                        <div
-                          key={index}
-                          className="rounded-full border bg-muted px-3 py-1 text-xs font-medium"
-                        >
-                          {facility}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-medium">Description</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {booking.data.room.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Gallery */}
-                {allPhotos.length > 1 && (
-                  <div>
-                    <p className="mb-2 text-sm font-medium">Gallery</p>
-                    <div className="grid grid-cols-4 gap-2">
-                      {allPhotos.slice(0, 4).map((photo, index) => (
-                        <div
-                          key={index}
-                          className="group relative aspect-square cursor-pointer overflow-hidden rounded border"
-                          onClick={() => openGallery(index)}
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                              openGallery(index);
-                            }
-                          }}
-                        >
-                          <Image
-                            src={photo}
-                            alt={`Gallery photo ${index + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                          {index === 3 && allPhotos.length > 4 && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                              <span className="text-lg font-semibold text-white">
-                                +{allPhotos.length - 4}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </CardContent>
-        </Card>
+                  )}
+                </>
+              )}
+            </WideCardContent>
+          </WideCard>
+        </div>
       </div>
 
       {/* Gallery Dialog */}

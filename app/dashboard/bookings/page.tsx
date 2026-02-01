@@ -16,9 +16,9 @@ import {
   MapPin,
   Clock,
 } from 'lucide-react'
-import { MCard, MCardHeader, MCardTitle, MCardContent } from '@/components/material/m-card'
+import { WideCard, WideCardContent } from '@/components/desktop'
+import { DesktopTable, DesktopTableHeader, DesktopTableBody, DesktopTableRow, DesktopTableHead, DesktopTableCell } from '@/components/desktop'
 import { MButton } from '@/components/material/m-button'
-import { MTable, MTableHeader, MTableBody, MTableRow, MTableHead, MTableCell } from '@/components/material/m-table'
 import { MBadge } from '@/components/material/m-badge'
 import { Input } from '@/components/ui/input'
 import {
@@ -94,10 +94,10 @@ export default function BookingsPage() {
           className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
           <div>
-            <h1 className="text-headline-large font-semibold tracking-tight">
+            <h1 className="text-heading-xl font-semibold tracking-tight">
               My Bookings
             </h1>
-            <p className="text-body-large text-muted-foreground mt-1">
+            <p className="text-body-md text-muted-foreground mt-1">
               Manage your meeting room bookings
             </p>
           </div>
@@ -110,11 +110,11 @@ export default function BookingsPage() {
         </motion.div>
 
         {/* Filters */}
-        <MCard variant="outlined">
-          <MCardContent className="pt-6">
+        <WideCard variant="outlined" padding="md">
+          <WideCardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
               <div className="space-y-2">
-                <label htmlFor="search" className="text-label-medium font-medium">
+                <label htmlFor="search" className="text-label-md font-medium">
                   Search
                 </label>
                 <div className="relative">
@@ -129,7 +129,7 @@ export default function BookingsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="status" className="text-label-medium font-medium">
+                <label htmlFor="status" className="text-label-md font-medium">
                   Status
                 </label>
                 <Select
@@ -151,7 +151,7 @@ export default function BookingsPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label htmlFor="room" className="text-label-medium font-medium">
+                <label htmlFor="room" className="text-label-md font-medium">
                   Room
                 </label>
                 <Select
@@ -174,7 +174,7 @@ export default function BookingsPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label htmlFor="dateFrom" className="text-label-medium font-medium">
+                <label htmlFor="dateFrom" className="text-label-md font-medium">
                   From Date
                 </label>
                 <Input
@@ -185,7 +185,7 @@ export default function BookingsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="dateTo" className="text-label-medium font-medium">
+                <label htmlFor="dateTo" className="text-label-md font-medium">
                   To Date
                 </label>
                 <Input
@@ -202,12 +202,12 @@ export default function BookingsPage() {
                 Clear Filters
               </MButton>
             </div>
-          </MCardContent>
-        </MCard>
+          </WideCardContent>
+        </WideCard>
 
         {/* Table */}
-        <MCard variant="elevated">
-          <MCardContent className="p-0">
+        <WideCard variant="elevated" padding="none">
+          <WideCardContent>
             {isLoading ? (
               <div className="space-y-4 p-6">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -226,8 +226,8 @@ export default function BookingsPage() {
                   <Calendar className="h-8 w-8 text-muted-foreground" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-title-large font-semibold">No bookings found</h3>
-                  <p className="text-body-medium text-muted-foreground">
+                  <h3 className="text-label-lg font-semibold">No bookings found</h3>
+                  <p className="text-body-sm text-muted-foreground">
                     Try adjusting your filters or create a new booking
                   </p>
                 </div>
@@ -236,57 +236,57 @@ export default function BookingsPage() {
                 </MButton>
               </div>
             ) : (
-              <MTable variant="elevated" stickyHeader>
-                <MTableHeader>
-                  <MTableRow>
-                    <MTableHead>Room</MTableHead>
-                    <MTableHead>Date</MTableHead>
-                    <MTableHead>Time</MTableHead>
-                    <MTableHead>Description</MTableHead>
-                    <MTableHead>Status</MTableHead>
-                    <MTableHead className="text-right">Actions</MTableHead>
-                  </MTableRow>
-                </MTableHeader>
-                <MTableBody>
+              <DesktopTable stickyHeader compact={false} hoverable={true} striped={true}>
+                <DesktopTableHeader>
+                  <DesktopTableRow>
+                    <DesktopTableHead>Room</DesktopTableHead>
+                    <DesktopTableHead>Date</DesktopTableHead>
+                    <DesktopTableHead>Time</DesktopTableHead>
+                    <DesktopTableHead>Description</DesktopTableHead>
+                    <DesktopTableHead>Status</DesktopTableHead>
+                    <DesktopTableHead align="right">Actions</DesktopTableHead>
+                  </DesktopTableRow>
+                </DesktopTableHeader>
+                <DesktopTableBody>
                   {bookingsData?.data?.data.map((booking: Booking, index) => (
-                    <MTableRow key={booking.id}>
-                      <MTableCell>
+                    <DesktopTableRow key={booking.id} index={index}>
+                      <DesktopTableCell>
                         <div className="flex items-center gap-2">
                           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10">
                             <MapPin className="h-4 w-4 text-primary" />
                           </div>
-                          <span className="text-body-medium font-medium">
+                          <span className="text-body-sm font-medium">
                             {booking.room?.name || 'Unknown'}
                           </span>
                         </div>
-                      </MTableCell>
-                      <MTableCell>
+                      </DesktopTableCell>
+                      <DesktopTableCell>
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-body-medium">
+                          <span className="text-body-sm">
                             {formatDate(booking.date)}
                           </span>
                         </div>
-                      </MTableCell>
-                      <MTableCell>
+                      </DesktopTableCell>
+                      <DesktopTableCell>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-body-medium">
+                          <span className="text-body-sm">
                             {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
                           </span>
                         </div>
-                      </MTableCell>
-                      <MTableCell>
-                        <span className="text-body-medium text-muted-foreground line-clamp-1 max-w-xs">
+                      </DesktopTableCell>
+                      <DesktopTableCell>
+                        <span className="text-body-sm text-muted-foreground line-clamp-1 max-w-xs">
                           {booking.description || '-'}
                         </span>
-                      </MTableCell>
-                      <MTableCell>
+                      </DesktopTableCell>
+                      <DesktopTableCell>
                         <MBadge variant={statusConfig[booking.status].variant} size="sm">
                           <StatusBadge status={booking.status} />
                         </MBadge>
-                      </MTableCell>
-                      <MTableCell className="text-right">
+                      </DesktopTableCell>
+                      <DesktopTableCell align="right">
                         <div className="flex items-center justify-end gap-2">
                           <Link href={`/dashboard/bookings/${booking.id}`}>
                             <MButton variant="text" size="icon" aria-label="View booking">
@@ -301,18 +301,18 @@ export default function BookingsPage() {
                             </Link>
                           )}
                         </div>
-                      </MTableCell>
-                    </MTableRow>
+                      </DesktopTableCell>
+                    </DesktopTableRow>
                   ))}
-                </MTableBody>
-              </MTable>
+                </DesktopTableBody>
+              </DesktopTable>
             )}
-          </MCardContent>
+          </WideCardContent>
 
           {/* Pagination */}
           {bookingsData?.data?.pagination && (
-            <div className="flex flex-col gap-4 border-t border-outline/50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-body-medium text-muted-foreground">
+            <div className="flex flex-col gap-4 border-t border-subtle px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-body-sm text-muted-foreground">
                 Showing {((bookingsData.data.pagination.page - 1) * bookingsData.data.pagination.limit) + 1} to{' '}
                 {Math.min(
                   bookingsData.data.pagination.page * bookingsData.data.pagination.limit,
@@ -330,7 +330,7 @@ export default function BookingsPage() {
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </MButton>
-                <span className="text-body-medium">
+                <span className="text-body-sm">
                   Page {bookingsData.data.pagination.page} of{' '}
                   {bookingsData.data.pagination.totalPages}
                 </span>
@@ -349,7 +349,7 @@ export default function BookingsPage() {
               </div>
             </div>
           )}
-        </MCard>
+        </WideCard>
       </div>
     </PageTransition>
   )
